@@ -235,6 +235,23 @@ public class UserDao {
     }
     
     /**
+     * Gets an active user by its email.
+     * 
+     * @param email User's email
+     * @return User
+     */
+    public User getActiveByEmail(String email) {
+        EntityManager em = ThreadLocalContext.get().getEntityManager();
+        try {
+            Query q = em.createQuery("select u from User u where u.email = :email and u.deleteDate is null");
+            q.setParameter("email", email);
+            return (User) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    /**
      * Deletes a user.
      * 
      * @param username User's username
