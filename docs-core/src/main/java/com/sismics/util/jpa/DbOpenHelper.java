@@ -111,12 +111,14 @@ abstract class DbOpenHelper {
             log.error("Unable to complete schema update", e);
         } finally {
             try {
-                connection.commit();
-                if (stmt != null) {
-                    stmt.close();
-                    stmt = null;
+                if (connection != null) {
+                    connection.commit();
+                    if (stmt != null) {
+                        stmt.close();
+                        stmt = null;
+                    }
+                    jdbcConnectionAccess.releaseConnection(connection);
                 }
-                jdbcConnectionAccess.releaseConnection(connection);
             } catch (Exception e) {
                 exceptions.add(e);
                 log.error("Unable to close connection", e);
