@@ -3,7 +3,7 @@
 /**
  * File modal view controller.
  */
-angular.module('docs').controller('FileModalView', function ($uibModalInstance, $scope, $state, $stateParams, $sce, Restangular, $transitions) {
+angular.module('docs').controller('FileModalView', function ($uibModalInstance, $scope, $state, $stateParams, $sce, Restangular, $transitions, $uibModal) {
   var setFile = function (files) {
     // Search current file
     _.each(files, function (value) {
@@ -122,5 +122,36 @@ angular.module('docs').controller('FileModalView', function ($uibModalInstance, 
    */
   $scope.canDisplayPreview = function () {
     return $scope.file && $scope.file.mimetype !== 'application/pdf';
+  };
+
+  /**
+   * Open image editor modal
+   */
+  $scope.editImage = function() {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'partial/docs/file.edit.image.html',
+      controller: 'FileModalEditImage',
+      size: 'lg',
+      resolve: {
+        file: function() {
+          return $scope.file;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(editedFile) {
+      // 刷新文件列表
+      Restangular.one('file/list').get({ id: $stateParams.id }).then(function (data) {
+        $scope.files = data.files;
+        setFile(data.files);
+      });
+    });
+  };
+
+  /**
+   * Return true if the file is an image
+   */
+  $scope.isImage = function() {
+    return $scope.file && $scope.file.mimetype && $scope.file.mimetype.startsWith('image/');
   };
 });

@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h3 class="modal-title">编辑图片</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="image-preview-container" style="text-align: center; position: relative; overflow: hidden;">
+                <div style="position: relative; display: inline-block;"
+                     ng-style="{
+                         'transform': 'rotate(' + rotation + 'deg)',
+                         'transform-origin': 'center center',
+                         'transition': 'transform 0.3s ease'
+                     }">
+                    <img ng-src="{{editedImage.src}}" style="max-width: 100%; max-height: 500px;" />
+                    <div ng-if="isCropping" class="crop-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);">
+                        <div class="crop-area" style="position: absolute; border: 2px solid #fff; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); cursor: move;"
+                             ng-style="{
+                                 left: cropData.x + 'px',
+                                 top: cropData.y + 'px',
+                                 width: cropData.width + 'px',
+                                 height: cropData.height + 'px'
+                             }"
+                             ng-mousedown="startDrag($event, 'move')">
+                            <div class="crop-handle" style="position: absolute; width: 12px; height: 12px; background: #fff; border: 1px solid #000; z-index: 1000;"
+                                 ng-repeat="handle in ['nw','ne','sw','se']"
+                                 ng-style="{
+                                     left: handle.includes('w') ? '-6px' : 'auto',
+                                     right: handle.includes('e') ? '-6px' : 'auto',
+                                     top: handle.includes('n') ? '-6px' : 'auto',
+                                     bottom: handle.includes('s') ? '-6px' : 'auto',
+                                     cursor: handle + '-resize'
+                                 }"
+                                 ng-mousedown="startDrag($event, handle)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="crop-controls" style="margin-top: 10px; text-align: center;">
+                <button class="btn btn-default" ng-click="startCrop()" ng-if="!isCropping">开始裁剪</button>
+                <button class="btn btn-default" ng-click="cancelCrop()" ng-if="isCropping">取消裁剪</button>
+                <button class="btn btn-primary" ng-click="applyCrop()" ng-if="isCropping">应用裁剪</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>旋转</label>
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="rotate(-90)">
+                        <span class="fas fa-undo"></span> 向左旋转
+                    </button>
+                    <button class="btn btn-default" ng-click="rotate(90)">
+                        <span class="fas fa-redo"></span> 向右旋转
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="resetEdit()">重置</button>
+    <button class="btn btn-default" ng-click="cancel()">取消</button>
+    <button class="btn btn-primary" ng-click="applyEdit()">应用</button>
+</div> 
