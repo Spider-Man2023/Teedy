@@ -5,7 +5,7 @@ package com.sismics.docs.rest.constant;
  *
  * @author jtremeaux 
  */
-public enum BaseFunction {
+public enum Baseunction {
 
     /**
      * Allows the user to use the admin fonctions.
