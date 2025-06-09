@@ -7,8 +7,5 @@ package com.sismics.docs.rest.constant;
  */
 public enum BaseFunction {
 
-    /**
-     * Allows the user to use the admin fonctions.
-     */
-    ADMIN
+
 }
