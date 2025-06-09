@@ -5,7 +5,9 @@ package com.sismics.docs.rest.constant;
  *
  * @author jtremeaux 
  */
-public enum BaseFunction {
+public enum Baseunction {
 
 
 }
+
+xzy
